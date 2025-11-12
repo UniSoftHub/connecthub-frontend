@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ConnectHub - Login</title>
+  </head>
+  <body>
+    <div class="page-content">
+      <div class="image-login">
+        <img src="imgConnectHub.png" alt="imagem inicial de login" />
+      </div>
+      <div class="login-content">
+        <div class="logo">
+          <img src="capeloimg.png" alt="componente capelo logomarca" />
+          <h1>ConnectHub</h1>
+        </div>
+        <h2>Acesse sua conta</h2>
+        <div class="inputs">
+          <app-primary-input
+            [label]="'E-mail:'"
+            [placeholder]="'Digite seu endereço de e-mail'"
+            [type]="'email'"
+            [errorMessage]="'E-mail inválido'"
+            [iconName]="'ph ph-envelope'"
+          ></app-primary-input>
+          <app-primary-input
+            [label]="'Senha:'"
+            [placeholder]="'Digite senha'"
+            [type]="'password'"
+            [errorMessage]="'Senha inválida'"
+          ></app-primary-input>
+        </div>
+
+        <div class="button-access">
+          <app-primary-button
+            [type]="'submit'"
+            [label]="'Acessar'"
+            [fullWidth]="true"
+          ></app-primary-button>
+          <a href="">Esqueci a senha</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

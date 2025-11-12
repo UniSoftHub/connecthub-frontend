@@ -1,0 +1,98 @@
+* {
+  // Aplica a todos os elementos
+  box-sizing: border-box; // Garante que padding e border sejam contados DENTRO do width/height
+}
+
+html,
+body {
+  margin: 0; // Remove margem padrão
+  padding: 0; // Remove padding padrão
+  width: 100%; // Ocupa a largura total
+  height: 100%; // Ocupa a altura total
+  overflow: hidden; // Previne o scroll na raiz, se houver um pequeno excesso
+}
+
+.image-login {
+  flex: 0 0 55%;
+  width: 55%;
+  height: 100vh;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.page-content {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+}
+
+.login-content {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: top;
+  align-items: left;
+  color: #fff;
+  margin: 100px;
+  overflow-y: auto;
+}
+
+.login-content h2 {
+  color: var(--grey-100, #939393);
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.logo {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  gap: 15px;
+  margin: 0;
+}
+
+.logo img {
+  width: 60px;
+  height: 50px;
+}
+
+.logo h1 {
+  margin: 0;
+  padding: 0;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  gap: 20px;
+}
+
+.button-access {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 90px;
+  align-items: stretch;
+}
+
+.app-primary-button {
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  margin-left: 0;
+  margin-right: 0;
+  align-self: stretch;
+}

@@ -3,8 +3,13 @@ import { Layout } from './components/core/layout/layout';
 import { Home } from './pages/home/home';
 import { Discussions } from './pages/discussions/discussions';
 import { NewDiscussion } from './pages/new-discussion/new-discussion';
+import { Login } from './pages/login/login';
 
 export const routes: Routes = [
+  {
+    path: 'login',
+    component: Login,
+  },
   {
     path: '',
     component: Layout,
@@ -29,7 +34,7 @@ export const routes: Routes = [
     ],
   },
   {
-    path: '**',
+    path: '***',
     redirectTo: 'home',
   },
 ];
