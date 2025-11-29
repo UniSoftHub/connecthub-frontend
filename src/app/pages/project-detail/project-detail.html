@@ -1,0 +1,176 @@
+@if (project) {
+  <div class="project-detail-container">
+    <!-- Back Button -->
+    <div class="back-section">
+      <app-primary-button
+        label="Voltar para projetos"
+        phIcon="ph-arrow-left"
+        variant="secondary"
+        (click)="goBack()"
+      />
+    </div>
+
+    <!-- Project Hero -->
+    <div class="project-header">
+      <div class="project-hero">
+        <div class="hero-content">
+          <!-- Tech Badges -->
+          <div class="tech-badges">
+            @for (tech of project.technologies; track tech) {
+              <span
+                class="tech-badge"
+                [style.color]="getTechColor(tech)"
+                [style.border-color]="getTechColor(tech)"
+              >
+                {{ tech }}
+              </span>
+            }
+          </div>
+
+          <!-- Title & Description -->
+          <h1>{{ project.name }}</h1>
+          <p class="project-description">{{ project.description }}</p>
+
+          <!-- Project Meta -->
+          <div class="project-meta">
+            <!-- Author Card -->
+            <div class="author-card">
+              <div class="avatar-wrapper">
+                @if (!authorImageError && project.author.avatarUrl) {
+                  <img
+                    [src]="project.author.avatarUrl"
+                    [alt]="project.author.name"
+                    (error)="onAuthorImageError()"
+                  />
+                } @else {
+                  <div
+                    class="avatar-fallback"
+                    [style.background-color]="getAvatarColor(project.author.name)"
+                  >
+                    {{ getInitials(project.author.name) }}
+                  </div>
+                }
+              </div>
+              <div class="author-info">
+                <span class="label">Criado por</span>
+                <span class="author-name">{{ project.author.name }}</span>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-row">
+              <div class="stat-item">
+                <i class="ph ph-eye"></i>
+                <span>{{ project.countViews | number }} visualizações</span>
+              </div>
+              <div class="stat-item">
+                <i class="ph ph-chat-dots"></i>
+                <span>{{ comments.length }} comentários</span>
+              </div>
+              <div class="stat-item">
+                <i class="ph ph-calendar-blank"></i>
+                <span>{{ project.createdAt | date: 'dd/MM/yyyy' }}</span>
+              </div>
+            </div>
+
+            <!-- Repository Link -->
+            <app-primary-button
+              label="Acessar Repositório"
+              phIcon="ph-github-logo"
+              variant="primary"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="comments-section">
+      <!-- Comments Header -->
+      <div class="comments-header">
+        <h2>
+          <i class="ph ph-chat-text"></i>
+          Comentários ({{ comments.length }})
+        </h2>
+      </div>
+
+      <!-- Add Comment Form -->
+      <div class="add-comment-card">
+        <div class="avatar-wrapper">
+          @if (currentUser && !currentUserImageError && currentUser.avatarUrl) {
+            <img
+              [src]="currentUser.avatarUrl"
+              [alt]="currentUser.name"
+              (error)="onCurrentUserImageError()"
+            />
+          } @else {
+            <div
+              class="avatar-fallback"
+              [style.background-color]="getAvatarColor(currentUser?.name || 'Usuário Atual')"
+            >
+              {{ getInitials(currentUser?.name || 'Usuário Atual') }}
+            </div>
+          }
+        </div>
+
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="comment-form">
+          <app-textarea
+            placeholder="Adicione um comentário..."
+            formControlName="text"
+            [rows]="3"
+            [required]="true"
+            errorMessage="O comentário deve ter entre 1 e 500 caracteres"
+            (focus)="isCommentExpanded = true"
+            class="comment-textarea"
+          />
+
+          <div class="form-actions">
+            <app-primary-button
+              label="Cancelar"
+              variant="secondary"
+              type="button"
+              (click)="cancelComment()"
+            />
+            <app-primary-button
+              label="Comentar"
+              phIcon="ph-paper-plane-tilt"
+              variant="primary"
+              type="submit"
+              [disabled]="commentForm.invalid || isSubmittingComment"
+            />
+          </div>
+        </form>
+      </div>
+
+      <!-- Comments List -->
+      @if (comments.length > 0) {
+        <div class="comments-list">
+          @for (comment of comments; track comment.id) {
+            <app-comment-card
+              [comment]="comment"
+              [currentUserId]="currentUserId"
+              (like)="likeComment($event)"
+              (edit)="editComment($event)"
+              (delete)="deleteComment($event)"
+            />
+          }
+        </div>
+      }
+
+      <!-- Empty State -->
+      @if (comments.length === 0) {
+        <div class="empty-comments">
+          <i class="ph ph-chat-dots"></i>
+          <h3>Nenhum comentário ainda</h3>
+          <p>Seja o primeiro a comentar sobre este projeto!</p>
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <!-- Loading State -->
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Carregando projeto...</p>
+  </div>
+}
