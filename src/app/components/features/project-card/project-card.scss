@@ -1,0 +1,293 @@
+.project-card {
+  background: linear-gradient(135deg, #1a1a1e 0%, #16161a 100%);
+  border: 1px solid rgba(155, 126, 217, 0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  // Efeito de brilho sutil
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(155, 126, 217, 0.5), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  &:hover {
+    transform: translateY(-12px);
+    border-color: rgba(155, 126, 217, 0.5);
+    box-shadow:
+      0 24px 48px rgba(155, 126, 217, 0.25),
+      0 0 0 1px rgba(155, 126, 217, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .project-image {
+      transform: scale(1.05);
+
+      &::after {
+        opacity: 0.6;
+      }
+    }
+
+    .btn-repo {
+      background: #9b7ed9;
+      color: #ffffff;
+      transform: translateX(4px);
+      box-shadow: 0 4px 16px rgba(155, 126, 217, 0.4);
+    }
+
+    .tech-badge {
+      transform: translateY(-2px);
+    }
+  }
+
+  &:active {
+    transform: translateY(-8px);
+  }
+
+  .project-image {
+    width: 100%;
+    height: 220px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+
+    // Overlay gradiente
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
+      transition: opacity 0.4s ease;
+      opacity: 0.4;
+    }
+
+    .tech-badges {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      z-index: 2;
+      max-width: calc(100% - 2rem);
+      justify-content: flex-end;
+
+      .tech-badge {
+        padding: 0.5rem 0.875rem;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(12px);
+        font-size: 0.75rem;
+        font-weight: 700;
+        border-radius: 8px;
+        border: 1px solid;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.95);
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+
+  .project-content {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 0.875rem 0;
+      letter-spacing: -0.5px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: all 0.3s ease;
+    }
+
+    .project-description {
+      font-size: 0.9375rem;
+      color: #a0a0a8;
+      line-height: 1.7;
+      margin: 0 0 1.5rem 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
+      min-height: 4.5rem;
+    }
+
+    .project-author {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem 0;
+      border-top: 1px solid rgba(155, 126, 217, 0.1);
+      border-bottom: 1px solid rgba(155, 126, 217, 0.1);
+
+      img {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 2px solid #9b7ed9;
+        object-fit: cover;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(155, 126, 217, 0.3);
+
+        &:hover {
+          transform: scale(1.1);
+          border-color: #b89ee8;
+        }
+      }
+
+      .author-info {
+        flex: 1;
+        min-width: 0;
+
+        .author-name {
+          font-size: 0.9375rem;
+          font-weight: 600;
+          color: #ffffff;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin-bottom: 0.125rem;
+        }
+
+        .author-username {
+          font-size: 0.8125rem;
+          color: #7d7d89;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+
+    .project-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+
+      .project-stats {
+        display: flex;
+        gap: 1.5rem;
+
+        .stat-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: #7d7d89;
+          font-size: 0.875rem;
+          font-weight: 500;
+          transition: color 0.3s ease;
+
+          i {
+            font-size: 1.125rem;
+            color: #9b7ed9;
+            transition: transform 0.3s ease;
+          }
+
+          &:hover {
+            color: #9b9ba5;
+
+            i {
+              transform: scale(1.1);
+            }
+          }
+        }
+      }
+
+      .btn-repo {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.75rem 1.5rem;
+        background: rgba(155, 126, 217, 0.12);
+        color: #9b7ed9;
+        border: 1px solid rgba(155, 126, 217, 0.3);
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        white-space: nowrap;
+        letter-spacing: 0.025em;
+
+        &:hover {
+          background: #9b7ed9;
+          color: #ffffff;
+          border-color: #9b7ed9;
+          transform: translateX(4px);
+          box-shadow: 0 4px 16px rgba(155, 126, 217, 0.4);
+        }
+
+        &:active {
+          transform: translateX(2px);
+        }
+
+        i {
+          font-size: 1.125rem;
+          transition: transform 0.3s ease;
+        }
+
+        &:hover i {
+          transform: rotate(360deg);
+        }
+      }
+    }
+  }
+
+  // Responsivo
+  @media (max-width: 768px) {
+    .project-content {
+      padding: 1.5rem;
+
+      h3 {
+        font-size: 1.375rem;
+      }
+
+      .project-footer {
+        flex-direction: column;
+        align-items: stretch;
+
+        .project-stats {
+          justify-content: center;
+        }
+
+        .btn-repo {
+          justify-content: center;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+<div class="project-card" (click)="onCardClick()">
+  <!-- Project Image -->
+  <div
+    class="project-image"
+    [style.background-image]="
+      'linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url(' + project.imageUrl + ')'
+    "
+  >
+    <div class="tech-badges">
+      @for (tech of project.technologies; track tech) {
+        <span
+          class="tech-badge"
+          [style.color]="getTechColor(tech)"
+          [style.border-color]="getTechColor(tech)"
+          [title]="tech"
+        >
+          {{ tech }}
+        </span>
+      }
+    </div>
+  </div>
+
+  <!-- Project Content -->
+  <div class="project-content">
+    <h3 [title]="project.name">{{ project.name }}</h3>
+    <p class="project-description" [title]="project.description">
+      {{ project.description }}
+    </p>
+
+    <!-- Author -->
+    <div class="project-author">
+      <img
+        [src]="project.author.avatarUrl"
+        [alt]="project.author.name"
+        onerror="this.src='https://ui-avatars.com/api/?name=' + this.alt + '&background=9b7ed9&color=fff&size=128'"
+      />
+      <div class="author-info">
+        <div class="author-name" [title]="project.author.name">
+          {{ project.author.name }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats and Actions -->
+    <div class="project-footer">
+      <div class="project-stats">
+        <div class="stat-item" title="Visualizações">
+          <i class="ph ph-eye"></i>
+          <span>{{ project.countViews | number }}</span>
+        </div>
+      </div>
+
+      <a
+        [href]="project.repositoryUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-repo"
+        (click)="$event.stopPropagation()"
+        title="Ver repositório no GitHub"
+      >
+        <i class="bi bi-github"></i>
+        <span>Repositório</span>
+      </a>
+    </div>
+  </div>
+</div>
