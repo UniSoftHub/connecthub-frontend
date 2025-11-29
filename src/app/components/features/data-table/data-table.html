@@ -1,0 +1,91 @@
+<div class="data-table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        @if (selectable) {
+          <th class="checkbox-cell">
+            <input
+              type="checkbox"
+              [checked]="selectedItems.size === data.length && data.length > 0"
+              (change)="toggleSelectAll()"
+            />
+          </th>
+        }
+        @for (column of columns; track column.key) {
+          <th [style.width]="column.width">{{ column.label }}</th>
+        }
+        @if (actions.length > 0) {
+          <th class="actions-cell">Ações</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of data; track item.id) {
+        <tr (click)="onRowClick(item)">
+          @if (selectable) {
+            <td class="checkbox-cell" (click)="$event.stopPropagation()">
+              <input
+                type="checkbox"
+                [checked]="isSelected(item)"
+                (change)="toggleSelection(item)"
+              />
+            </td>
+          }
+          @for (column of columns; track column.key) {
+            <td>
+              @if (column.type === 'avatar') {
+                <div class="avatar-cell">
+                  <img
+                    [src]="item.avatarUrl ?? 'assets/images/default-avatar.png'"
+                    [alt]="item.name"
+                    class="user-avatar"
+                  />
+                  <span>{{ item[column.key] }}</span>
+                </div>
+              } @else if (column.type === 'badge') {
+                @if (column.key === 'role') {
+                  <span class="role-badge" [class]="'role-' + item.role.toLowerCase()">
+                    {{ getRoleLabel(item.role) }}
+                  </span>
+                } @else if (column.key === 'isActive') {
+                  <span
+                    class="status-badge"
+                    [class]="!!item['isActive'] ? 'status-active' : 'status-inactive'"
+                  >
+                    {{ !!item['isActive'] ? 'Ativo' : 'Inativo' }}
+                  </span>
+                }
+              } @else {
+                {{
+                  column.valueFormatter
+                    ? column.valueFormatter(item[column.key], item)
+                    : item[column.key] || '-'
+                }}
+              }
+            </td>
+          }
+          @if (actions.length > 0) {
+            <td class="actions-cell" (click)="$event.stopPropagation()">
+              @for (action of actions; track action.label) {
+                <button
+                  class="action-button"
+                  [title]="action.label"
+                  (click)="action.callback(item)"
+                >
+                  <i [class]="'ph ' + action.icon"></i>
+                </button>
+              }
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  @if (data.length === 0) {
+    <div class="empty-state">
+      <i class="ph ph-users"></i>
+      <p>{{ emptyMessage }}</p>
+    </div>
+  }
+</div>
