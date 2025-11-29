@@ -1,0 +1,242 @@
+<div class="auth-page">
+  <!-- Left Side - Branding -->
+  <div class="brand-section">
+    <div class="brand-content">
+      <div class="brand-logo">
+        <i class="ph ph-graduation-cap"></i>
+      </div>
+
+      <h1 class="brand-title">Connect Hub</h1>
+
+      <p class="brand-description">
+        Seu forúm acadêmico completo. Conecte-se com professores, acesse materiais exclusivos,
+        compartilhe seus projetos e transforme sua experiência educacional.
+      </p>
+
+      <div class="brand-features">
+        <div class="feature-item">
+          <i class="ph ph-users-three"></i>
+          <span>Comunidade ativa de estudantes</span>
+        </div>
+        <div class="feature-item">
+          <i class="ph ph-book-open"></i>
+          <span>Recursos educacionais ilimitados</span>
+        </div>
+      </div>
+
+      <div class="brand-decoration">
+        <div class="deco-circle"></div>
+        <div class="deco-circle"></div>
+        <div class="deco-circle"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right side - Formulários -->
+  <div class="form-section">
+    <div class="form-container">
+      <!--  Login Form -->
+      <div class="form-wrapper" [class.hidden]="!isLoginMode">
+        <div class="form-header">
+          <h2>Bem-vindo de volta!</h2>
+          <p>Entre com suas credenciais para continuar</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
+          <app-primary-input
+            label="E-mail"
+            type="email"
+            placeholder="seu.email@exemplo.com"
+            formControlName="email"
+            [required]="true"
+            errorMessage="E-mail inválido"
+          />
+
+          <app-primary-input
+            label="Senha"
+            type="password"
+            placeholder="••••••••"
+            formControlName="password"
+            [required]="true"
+            errorMessage="Senha deve ter no mínimo 6 caracteres"
+          />
+
+          <div class="form-options">
+            <label class="checkbox-wrapper">
+              <input type="checkbox" />
+              <span>Lembrar-me</span>
+            </label>
+            <a href="" class="forgot-link">Esqueceu a senha?</a>
+          </div>
+
+          @if (errorMessage && isLoginMode) {
+            <div class="error-alert">
+              <i class="ph ph-warning-circle"></i>
+              <span>{{ errorMessage }}</span>
+            </div>
+          }
+
+          <app-primary-button
+            label="Entrar"
+            type="submit"
+            variant="primary"
+            size="large"
+            [fullWidth]="true"
+            [disabled]="loading"
+          />
+
+          <div class="form-divider">
+            <span>ou</span>
+          </div>
+
+          <div class="switch-mode">
+            <span>Não tem uma conta?</span>
+            <button type="button" class="switch-button" (click)="toggleMode()">Criar conta</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div class="form-wrapper" [class.hidden]="isLoginMode">
+        <div class="form-header">
+          <h2>Crie sua conta</h2>
+          <p>Junte-se à nossa comunidade acadêmica</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="auth-form">
+          <app-primary-input
+            label="Nome Completo"
+            type="text"
+            placeholder="Seu nome completo"
+            formControlName="name"
+            [required]="true"
+            errorMessage="Nome deve ter no mínimo 3 caracteres"
+          />
+
+          <app-primary-input
+            label="E-mail"
+            type="email"
+            placeholder="seu.email@exemplo.com"
+            formControlName="email"
+            [required]="true"
+            errorMessage="E-mail inválido"
+          />
+
+          <app-primary-input
+            label="Senha"
+            type="password"
+            placeholder="••••••••"
+            formControlName="password"
+            [required]="true"
+            errorMessage="Senha deve conter: 8+ caracteres, maiúscula, minúscula, número e caractere especial"
+          />
+
+          <app-primary-input
+            label="Confirmar Senha"
+            type="password"
+            placeholder="••••••••"
+            formControlName="confirmPassword"
+            [required]="true"
+            [errorMessage]="
+              registerForm.hasError('passwordMismatch') &&
+              registerForm.get('confirmPassword')?.touched
+                ? 'As senhas não coincidem'
+                : 'Campo obrigatório'
+            "
+          />
+
+          <!-- Strong Password indicator  -->
+          @if (showPasswordStrength) {
+            <div class="password-strength">
+              <div
+                class="strength-item"
+                [class.valid]="passwordRequirements.minLength"
+                [class.invalid]="!passwordRequirements.minLength"
+              >
+                <i
+                  class="ph"
+                  [class.ph-check-circle]="passwordRequirements.minLength"
+                  [class.ph-x-circle]="!passwordRequirements.minLength"
+                ></i>
+                <span>Mínimo 8 caracteres</span>
+              </div>
+              <div
+                class="strength-item"
+                [class.valid]="passwordRequirements.hasUpperCase"
+                [class.invalid]="!passwordRequirements.hasUpperCase"
+              >
+                <i
+                  class="ph"
+                  [class.ph-check-circle]="passwordRequirements.hasUpperCase"
+                  [class.ph-x-circle]="!passwordRequirements.hasUpperCase"
+                ></i>
+                <span>Uma letra maiúscula</span>
+              </div>
+              <div
+                class="strength-item"
+                [class.valid]="passwordRequirements.hasLowerCase"
+                [class.invalid]="!passwordRequirements.hasLowerCase"
+              >
+                <i
+                  class="ph"
+                  [class.ph-check-circle]="passwordRequirements.hasLowerCase"
+                  [class.ph-x-circle]="!passwordRequirements.hasLowerCase"
+                ></i>
+                <span>Uma letra minúscula</span>
+              </div>
+              <div
+                class="strength-item"
+                [class.valid]="passwordRequirements.hasNumeric"
+                [class.invalid]="!passwordRequirements.hasNumeric"
+              >
+                <i
+                  class="ph"
+                  [class.ph-check-circle]="passwordRequirements.hasNumeric"
+                  [class.ph-x-circle]="!passwordRequirements.hasNumeric"
+                ></i>
+                <span>Um número</span>
+              </div>
+              <div
+                class="strength-item"
+                [class.valid]="passwordRequirements.hasSpecialChar"
+                [class.invalid]="!passwordRequirements.hasSpecialChar"
+              >
+                <i
+                  class="ph"
+                  [class.ph-check-circle]="passwordRequirements.hasSpecialChar"
+                  [class.ph-x-circle]="!passwordRequirements.hasSpecialChar"
+                ></i>
+                <span>Um caractere especial</span>
+              </div>
+            </div>
+          }
+
+          @if (errorMessage && !isLoginMode) {
+            <div class="error-alert">
+              <i class="ph ph-warning-circle"></i>
+              <span>{{ errorMessage }}</span>
+            </div>
+          }
+
+          <app-primary-button
+            label="Criar Conta"
+            type="submit"
+            variant="primary"
+            size="large"
+            [fullWidth]="true"
+            [disabled]="loading"
+          />
+
+          <div class="form-divider">
+            <span>ou</span>
+          </div>
+
+          <div class="switch-mode">
+            <span>Já tem uma conta?</span>
+            <button type="button" class="switch-button" (click)="toggleMode()">Fazer login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
