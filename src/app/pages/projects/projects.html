@@ -1,0 +1,145 @@
+<div class="showcase-container">
+  <!-- Header -->
+  <header class="page-header">
+    <h1>Projetos</h1>
+    <app-primary-button
+      label="Novo Projeto"
+      phIcon="ph-plus"
+      variant="primary"
+      routerLink="/projetos/novo"
+    />
+  </header>
+
+  <!-- Filter Section -->
+  <div class="filters-section">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input
+        type="text"
+        placeholder="Buscar projetos..."
+        [(ngModel)]="searchTerm"
+        (input)="filterProjects()"
+      />
+    </div>
+    <div class="tech-filter">
+      <i class="bi bi-funnel"></i>
+      <select [(ngModel)]="selectedTech" (change)="filterProjects()">
+        @for (tech of technologies; track tech) {
+          <option [value]="tech">
+            {{ tech }}
+          </option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Projects Grid -->
+  @if (isLoading) {
+    <div class="loading">
+      <p>Carregando projetos...</p>
+    </div>
+  } @else {
+    <div class="projects-grid">
+      @for (project of filteredProjects; track project.id) {
+        <app-project-card
+          [project]="project"
+          (projectClick)="openProjectDetails(project.id.toString())"
+        />
+      }
+    </div>
+
+    @if (filteredProjects.length === 0) {
+      <div class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h3>Nenhum projeto encontrado</h3>
+        <p>Tente ajustar seus filtros ou adicione o primeiro projeto!</p>
+      </div>
+    }
+  }
+</div>
+
+@if (showAddModal) {
+  <div class="modal-overlay" (click)="closeAddModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Adicionar Projeto</h2>
+        <button class="btn-close" (click)="closeAddModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="modal-body">
+        <div class="form-group">
+          <label>Nome do Projeto *</label>
+          <input type="text" formControlName="name" placeholder="Ex: E-Commerce Platform" />
+          @if (projectForm.get('name')?.invalid && projectForm.get('name')?.touched) {
+            <div class="error-message">
+              <i class="bi bi-exclamation-circle"></i>
+              Nome é obrigatório (2-100 caracteres)
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Descrição *</label>
+          <textarea
+            formControlName="description"
+            rows="4"
+            placeholder="Descreva seu projeto em detalhes..."
+          ></textarea>
+          @if (projectForm.get('description')?.invalid && projectForm.get('description')?.touched) {
+            <div class="error-message">
+              <i class="bi bi-exclamation-circle"></i>
+              Descrição é obrigatória (10-500 caracteres)
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>URL do Repositório *</label>
+          <input
+            type="url"
+            formControlName="repositoryUrl"
+            placeholder="https://github.com/usuario/repositorio"
+          />
+          @if (
+            projectForm.get('repositoryUrl')?.invalid && projectForm.get('repositoryUrl')?.touched
+          ) {
+            <div class="error-message">
+              <i class="bi bi-exclamation-circle"></i>
+              URL do repositório é obrigatória
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>URL da Imagem (opcional)</label>
+          <input
+            type="url"
+            formControlName="imageUrl"
+            placeholder="https://exemplo.com/imagem.jpg"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Tecnologia Principal *</label>
+          <select formControlName="technologies">
+            @for (tech of technologies.slice(1); track tech) {
+              <option [value]="tech">
+                {{ tech }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="closeAddModal()">Cancelar</button>
+          <button type="submit" class="btn-submit" [disabled]="projectForm.invalid">
+            <i class="bi bi-check-lg"></i>
+            Adicionar Projeto
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
