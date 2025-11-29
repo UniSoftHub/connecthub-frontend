@@ -1,0 +1,76 @@
+<div class="comment-card">
+  <!-- Avatar Icon -->
+  <div class="avatar-wrapper">
+    @if (!authorImageError && author.avatarUrl) {
+      <img [src]="author.avatarUrl" [alt]="author.name" (error)="onAuthorImageError()" />
+    } @else {
+      <div class="avatar-fallback" [style.background-color]="getAvatarColor(author.name)">
+        {{ getInitials(author.name) }}
+      </div>
+    }
+  </div>
+
+  <div class="comment-content">
+    <div class="comment-header">
+      <div class="author-info">
+        <span class="author-name">{{ author.name }}</span>
+        <span class="comment-date">{{ comment.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+    </div>
+
+    <!-- View Mode -->
+    @if (!isEditing) {
+      <p class="comment-text">{{ comment.text }}</p>
+      <div class="comment-actions">
+        <button class="btn-action" (click)="onLike()">
+          <i class="ph ph-heart"></i>
+          Curtir
+        </button>
+        <button class="btn-action" (click)="onReply()">
+          <i class="ph ph-arrow-bend-up-left"></i>
+          Responder
+        </button>
+        @if (isOwner) {
+          <button class="btn-action edit" (click)="onEdit()">
+            <i class="ph ph-pencil-line"></i>
+            Editar
+          </button>
+          <button class="btn-action delete" (click)="onDelete()">
+            <i class="ph ph-trash"></i>
+            Excluir
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Edit Mode -->
+    @if (isEditing) {
+      <form [formGroup]="editForm" class="edit-mode">
+        <app-textarea
+          placeholder="Edite seu comentário..."
+          formControlName="text"
+          [rows]="3"
+          [required]="true"
+          errorMessage="O comentário deve ter entre 1 e 500 caracteres"
+          class="edit-textarea"
+        />
+        <div class="edit-actions">
+          <app-primary-button
+            label="Cancelar"
+            variant="secondary"
+            type="button"
+            (click)="onCancelEdit()"
+          />
+          <app-primary-button
+            label="Salvar"
+            phIcon="ph-check"
+            variant="primary"
+            type="button"
+            (click)="onSaveEdit()"
+            [disabled]="editForm.invalid"
+          />
+        </div>
+      </form>
+    }
+  </div>
+</div>
