@@ -22,6 +22,7 @@ export class Textarea {
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
   @Input() errorMessage: string = '';
+  @Input() width: string = '100%';
 
   textareaControl = new FormControl('');
 
