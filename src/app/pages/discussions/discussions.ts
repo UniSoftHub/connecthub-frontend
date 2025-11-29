@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { PrimaryButton } from '../../components/features/primary-button/primary-button';
-import { ITopicResponse } from '../../interfaces/topics/topic-response';
+import { ITopicResponse } from '../../interfaces/topic';
 
 @Component({
   selector: 'app-discussoes',
