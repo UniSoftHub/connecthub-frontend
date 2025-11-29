@@ -1,0 +1,19 @@
+<div class="toast-container">
+  @for (toast of toasts$ | async; track toast.id) {
+    <div class="toast toast-{{ toast.type }}" [@slideIn]>
+      <i
+        class="toast-icon ph"
+        [ngClass]="{
+          'ph-check-circle': toast.type === 'success',
+          'ph-x-circle': toast.type === 'error',
+          'ph-warning-circle': toast.type === 'warning',
+          'ph-info': toast.type === 'info',
+        }"
+      ></i>
+      <span class="toast-message">{{ toast.message }}</span>
+      <button class="toast-close" (click)="toastService.remove(toast.id)" aria-label="Fechar">
+        <i class="ph ph-x"></i>
+      </button>
+    </div>
+  }
+</div>
