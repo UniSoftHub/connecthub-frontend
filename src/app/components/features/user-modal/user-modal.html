@@ -1,0 +1,146 @@
+@if (isOpen) {
+  <div class="modal-overlay" (click)="onBackdropClick($event)">
+    <div class="modal-container">
+      <header class="modal-header">
+        <div class="header-content">
+          <h1>{{ isEditMode ? 'Editar Usuário' : 'Novo Usuário' }}</h1>
+          <p>{{ isEditMode ? 'Adicione ou Edite o usuário' : 'Adicione ou Edite o usuário' }}</p>
+        </div>
+        <button class="close-button" (click)="onCancel()" aria-label="Fechar modal">
+          <i class="ph ph-x"></i>
+        </button>
+      </header>
+
+      <main class="modal-body">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <!-- Avatar Section -->
+          <div class="avatar-section">
+            <div class="avatar-placeholder">
+              <i class="ph ph-user"></i>
+              <button type="button" class="avatar-edit-button">
+                <i class="ph ph-pencil-simple"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- First Row -->
+          <div class="form-row">
+            <app-primary-input
+              label="Nome do Usuário"
+              placeholder="Nome"
+              type="text"
+              formControlName="name"
+              [required]="true"
+              errorMessage="Nome é obrigatório (mínimo 3 caracteres)"
+            />
+            <app-primary-input
+              label="E-mail"
+              placeholder="exemplo@email.com"
+              type="email"
+              formControlName="email"
+              [required]="true"
+              errorMessage="E-mail válido é obrigatório"
+            />
+            <app-primary-input
+              label="CPF do Usuário"
+              placeholder="___.___.___-__"
+              type="text"
+              formControlName="cpf"
+              errorMessage="CPF inválido"
+            />
+          </div>
+
+          <!-- Second Row -->
+          <div class="form-row">
+            <app-primary-input
+              label="Nome Social"
+              placeholder="Nome"
+              type="text"
+              formControlName="socialName"
+            />
+            <app-primary-input
+              label="Telefone Celular"
+              placeholder="(__) _____-____"
+              type="tel"
+              formControlName="phone"
+              errorMessage="Telefone inválido"
+            />
+            <app-primary-input
+              label="Matrícula"
+              placeholder="Somente Números"
+              type="text"
+              formControlName="enrollmentId"
+              errorMessage="Matrícula é obrigatória"
+            />
+          </div>
+
+          <!-- Third Row -->
+          <div class="form-row">
+            <app-select
+              label="Status do usuário"
+              placeholder="Selecione"
+              [options]="statusOptions"
+              formControlName="isActive"
+              errorMessage="Por favor, selecione um status válido"
+            />
+            <app-primary-input
+              label="Senha"
+              [placeholder]="isEditMode ? 'Deixe em branco para não alterar' : 'Digite a senha'"
+              type="password"
+              formControlName="password"
+              [required]="!isEditMode"
+              [errorMessage]="isEditMode ? 'Senha opcional para alterar' : 'A senha é obrigatória'"
+            />
+            <app-primary-input
+              label="Data de Nascimento"
+              type="date"
+              formControlName="dateOfBirth"
+              errorMessage="Data de nascimento é obrigatória"
+            />
+          </div>
+
+          <!-- Fourth Row - Social Links and Role -->
+          <div class="form-row">
+            <app-select
+              label="Perfil do usuário"
+              placeholder="Selecione"
+              [options]="roleOptions"
+              formControlName="role"
+              errorMessage="Por favor, selecione um cargo válido"
+            />
+            <app-primary-input
+              label="GitHub"
+              placeholder="www.github.com.br/"
+              type="url"
+              formControlName="github"
+            />
+            <app-primary-input
+              label="LinkedIn"
+              placeholder="www.linkedin.com.br/"
+              type="url"
+              formControlName="linkedin"
+            />
+          </div>
+
+          <!-- Actions -->
+          <div class="modal-actions">
+            <app-primary-button
+              label="Cancelar Alterações"
+              phIcon="ph-x-circle"
+              variant="ghost"
+              type="button"
+              (buttonClick)="onCancel()"
+            />
+            <app-primary-button
+              label="Salvar Alterações"
+              phIcon="ph-check-circle"
+              variant="primary"
+              type="submit"
+              [disabled]="!userForm.valid"
+            />
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+}
