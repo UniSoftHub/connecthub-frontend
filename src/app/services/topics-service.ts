@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { INewTopicResponse } from '../interfaces/topics/new-topic-response';
 import { environment } from '../../environments/environment.development';
-import { ITopicResponse } from '../interfaces/topics/topic-response';
+import { INewTopicResponse, ITopicResponse } from '../interfaces/topic';
 
 @Injectable({
   providedIn: 'root',
