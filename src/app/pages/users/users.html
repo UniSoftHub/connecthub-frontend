@@ -1,0 +1,101 @@
+<app-toast-container></app-toast-container>
+
+<div class="usuarios-container">
+  <header class="page-header">
+    <div class="header-content">
+      <!-- title and description -->
+      <div class="header-text">
+        <h1>Gerenciamento de Usuários</h1>
+        <p>Adicione, Edite ou Inative um usuário. Manutenção em Lote.</p>
+      </div>
+      <app-primary-button
+        label="Novo Usuário"
+        phIcon="ph-plus"
+        variant="primary"
+        (buttonClick)="createUser()"
+      />
+    </div>
+    <!-- action buttons -->
+    <div class="header-actions">
+      <button class="filter-button">
+        <i class="ph ph-funnel"></i>
+      </button>
+      <button class="search-button">
+        <i class="ph ph-user-plus"></i>
+      </button>
+      <button class="export-button">
+        <i class="ph ph-export"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- data table -->
+  @if (isLoading) {
+    <div class="loading">
+      <p>Carregando usuários...</p>
+    </div>
+  } @else {
+    <app-data-table
+      [columns]="columns"
+      [data]="users"
+      [actions]="actions"
+      [selectable]="true"
+      (selectionChange)="onSelectionChange($event)"
+      (rowClick)="onRowClick($event)"
+      emptyMessage="Sem usuários no sistema"
+    />
+  }
+
+  <!-- pagination -->
+  @if (!isLoading && !hasError && totalPages > 1) {
+    <div class="pagination-section">
+      <div class="pagination-container">
+        <!-- previous button -->
+        <button
+          mat-icon-button
+          class="pagination-btn"
+          [disabled]="currentPage === 1"
+          (click)="previousPage()"
+          aria-label="Página anterior"
+        >
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <!-- page numbers -->
+        <div class="page-numbers">
+          @for (page of pageNumbers; track page) {
+            <button
+              mat-button
+              class="page-btn"
+              [class.active]="page === currentPage"
+              [class.ellipsis]="page === -1"
+              [disabled]="page === -1"
+              (click)="goToPage(page)"
+            >
+              {{ page === -1 ? '...' : page }}
+            </button>
+          }
+        </div>
+        <!-- next button -->
+        <button
+          mat-icon-button
+          class="pagination-btn"
+          [disabled]="currentPage === totalPages"
+          (click)="nextPage()"
+          aria-label="Próxima página"
+        >
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+      <!-- page info -->
+      <p class="page-info">Página {{ currentPage }} de {{ totalPages }}</p>
+    </div>
+  }
+</div>
+
+<!-- Modal de Usuário -->
+<app-user-modal
+  [isOpen]="isModalOpen"
+  [user]="selectedUser"
+  (closeModal)="closeModal()"
+  (saveUser)="saveUser($event)"
+/>
